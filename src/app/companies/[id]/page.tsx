@@ -1,74 +1,64 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { mockCompanies, mockJobs } from "@/lib/data";
-import {
-  MapPin,
-  Users,
-  Globe,
-  Calendar,
-  Building2,
-  ArrowLeft,
-  Briefcase,
-  Clock,
-  DollarSign,
-} from "lucide-react";
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import type { Metadata } from "next";
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { mockCompanies, mockJobs } from "@/lib/data"
+import { MapPin, Users, Globe, Calendar, Building2, ArrowLeft, Briefcase, Clock, DollarSign } from "lucide-react"
+import Link from "next/link"
+import { notFound } from "next/navigation"
+import type { Metadata } from "next"
 
 type Props = {
-  params: { id: string };
-};
+  params: Promise<{ id: string }>
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = params;
-  const company = mockCompanies.find((c) => c.id === id);
+  const { id } = await params
+  const company = mockCompanies.find((c) => c.id === id)
 
   if (!company) {
-    return { title: "Perusahaan Tidak Ditemukan | J*B" };
+    return { title: "Perusahaan Tidak Ditemukan | J*B" }
   }
 
   return {
     title: `${company.name} - Lowongan Kerja | J*B`,
     description: company.description,
-  };
+  }
 }
 
 function formatSalary(min: number, max: number) {
   const formatNum = (n: number) => {
-    if (n >= 1000000) return `${n / 1000000}jt`;
-    if (n >= 1000) return `${n / 1000}rb`;
-    return n.toString();
-  };
-  return `Rp ${formatNum(min)} - ${formatNum(max)}`;
+    if (n >= 1000000) return `${n / 1000000}jt`
+    if (n >= 1000) return `${n / 1000}rb`
+    return n.toString()
+  }
+  return `Rp ${formatNum(min)} - ${formatNum(max)}`
 }
 
 function formatDate(dateString: string) {
-  const date = new Date(dateString);
-  const now = new Date();
-  const diffTime = Math.abs(now.getTime() - date.getTime());
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const date = new Date(dateString)
+  const now = new Date()
+  const diffTime = Math.abs(now.getTime() - date.getTime())
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
 
-  if (diffDays === 0) return "Hari ini";
-  if (diffDays === 1) return "Kemarin";
-  if (diffDays < 7) return `${diffDays} hari lalu`;
-  if (diffDays < 30) return `${Math.floor(diffDays / 7)} minggu lalu`;
-  return `${Math.floor(diffDays / 30)} bulan lalu`;
+  if (diffDays === 0) return "Hari ini"
+  if (diffDays === 1) return "Kemarin"
+  if (diffDays < 7) return `${diffDays} hari lalu`
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} minggu lalu`
+  return `${Math.floor(diffDays / 30)} bulan lalu`
 }
 
 export default async function CompanyDetailPage({ params }: Props) {
-  const { id } = params;
-  const company = mockCompanies.find((c) => c.id === id);
+  const { id } = await params
+  const company = mockCompanies.find((c) => c.id === id)
 
   if (!company) {
-    notFound();
+    notFound()
   }
 
   // Get jobs for this company
-  const companyJobs = mockJobs.filter((j) => j.company === company.name);
+  const companyJobs = mockJobs.filter((j) => j.company === company.name)
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -101,12 +91,8 @@ export default async function CompanyDetailPage({ params }: Props) {
                 </div>
 
                 <div className="flex-1">
-                  <h1 className="text-2xl font-bold md:text-3xl">
-                    {company.name}
-                  </h1>
-                  <p className="mt-2 text-muted-foreground">
-                    {company.description}
-                  </p>
+                  <h1 className="text-2xl font-bold md:text-3xl">{company.name}</h1>
+                  <p className="mt-2 text-muted-foreground">{company.description}</p>
 
                   <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
                     <span className="flex items-center gap-1">
@@ -130,17 +116,8 @@ export default async function CompanyDetailPage({ params }: Props) {
                   </div>
 
                   {company.website && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-4 bg-transparent"
-                      asChild
-                    >
-                      <a
-                        href={company.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
+                    <Button variant="outline" size="sm" className="mt-4 bg-transparent" asChild>
+                      <a href={company.website} target="_blank" rel="noopener noreferrer">
                         <Globe className="mr-2 h-4 w-4" />
                         Kunjungi Website
                       </a>
@@ -170,10 +147,7 @@ export default async function CompanyDetailPage({ params }: Props) {
             ) : (
               <div className="grid gap-4">
                 {companyJobs.map((job) => (
-                  <Card
-                    key={job.id}
-                    className="group transition-all hover:border-primary/50 hover:shadow-md"
-                  >
+                  <Card key={job.id} className="group transition-all hover:border-primary/50 hover:shadow-md">
                     <CardContent className="p-6">
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                         <div className="flex-1">
@@ -195,7 +169,7 @@ export default async function CompanyDetailPage({ params }: Props) {
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <DollarSign className="h-4 w-4" />
-                                  {job.salary ? formatSalary(job.salary.min, job.salary.max) : "Nego"}
+                                  {formatSalary(job.salary.min, job.salary.max)}
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <Clock className="h-4 w-4" />
@@ -207,11 +181,7 @@ export default async function CompanyDetailPage({ params }: Props) {
 
                           <div className="mt-3 flex flex-wrap gap-2">
                             {job.tags.slice(0, 4).map((tag) => (
-                              <Badge
-                                key={tag}
-                                variant="secondary"
-                                className="text-xs"
-                              >
+                              <Badge key={tag} variant="secondary" className="text-xs">
                                 {tag}
                               </Badge>
                             ))}
@@ -233,5 +203,5 @@ export default async function CompanyDetailPage({ params }: Props) {
 
       <Footer />
     </div>
-  );
+  )
 }
