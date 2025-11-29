@@ -27,13 +27,30 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function formatSalary(min: number, max: number) {
-  const formatNum = (n: number) => {
-    if (n >= 1000000) return `${n / 1000000}jt`
-    if (n >= 1000) return `${n / 1000}rb`
-    return n.toString()
+function formatSalary(salary: any) {
+  // Handle if salary is an object with min/max
+  if (salary && typeof salary === 'object' && 'min' in salary && 'max' in salary) {
+    const formatNum = (n: number) => {
+      if (n >= 1000000) return `${n / 1000000}jt`
+      if (n >= 1000) return `${n / 1000}rb`
+      return n.toString()
+    }
+    return `Rp ${formatNum(salary.min)} - ${formatNum(salary.max)}`
   }
-  return `Rp ${formatNum(min)} - ${formatNum(max)}`
+  
+  // Handle if salary is a string
+  if (typeof salary === 'string') {
+    return salary
+  }
+  
+  // Handle if salary is a number
+  if (typeof salary === 'number') {
+    if (salary >= 1000000) return `Rp ${salary / 1000000}jt`
+    if (salary >= 1000) return `Rp ${salary / 1000}rb`
+    return `Rp ${salary}`
+  }
+  
+  return 'Gaji kompetitif'
 }
 
 function formatDate(dateString: string) {
@@ -169,7 +186,7 @@ export default async function CompanyDetailPage({ params }: Props) {
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <DollarSign className="h-4 w-4" />
-                                  {formatSalary(job.salary.min, job.salary.max)}
+                                  {formatSalary(job.salary)}
                                 </span>
                                 <span className="flex items-center gap-1">
                                   <Clock className="h-4 w-4" />
