@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import Link from "next/link"
 import type { Job } from "@/lib/types"
@@ -45,6 +44,7 @@ export function JobDetailContent({ job, similarJobs }: JobDetailContentProps) {
   const [isApplying, setIsApplying] = useState(false)
   const [applied, setApplied] = useState(false)
   const [saved, setSaved] = useState(false)
+
 
   const formatSalary = (salary?: Job["salary"]) => {
     if (!salary) return "Salary not disclosed"
@@ -316,7 +316,7 @@ export function JobDetailContent({ job, similarJobs }: JobDetailContentProps) {
                   </div>
                 </div>
                 <Button variant="outline" className="w-full bg-transparent" asChild>
-                  <Link href={`/companies/1`}>View Company Profile</Link>
+                  <Link href={`/companies/${job.companyId}`}>View Company Profile</Link>
                 </Button>
               </CardContent>
             </Card>

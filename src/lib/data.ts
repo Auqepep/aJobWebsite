@@ -52,6 +52,7 @@ export const mockJobs: Job[] = [
   {
     id: "1",
     title: "Senior Frontend Engineer",
+    companyId: "1",
     company: "Tokopedia",
     companyLogo: "/tokopedia-logo-green.jpg",
     location: "Jakarta Selatan",
@@ -79,6 +80,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "2",
+    companyId: "2",
     title: "Product Designer",
     company: "Gojek",
     companyLogo: "/gojek-logo-green.jpg",
@@ -107,6 +109,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "3",
+    companyId: "4",
     title: "DevOps Engineer",
     company: "Bukalapak",
     companyLogo: "/bukalapak-logo-red.jpg",
@@ -134,6 +137,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "4",
+    companyId: "6",
     title: "Marketing Manager",
     company: "Shopee Indonesia",
     companyLogo: "/shopee-logo-orange.jpg",
@@ -161,6 +165,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "5",
+    companyId: "3",
     title: "Junior Software Developer",
     company: "Traveloka",
     companyLogo: "/traveloka-logo-blue.jpg",
@@ -188,6 +193,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "6",
+    companyId: "6",
     title: "Sales Representative",
     company: "Mekari",
     companyLogo: "/mekari-logo-purple.jpg",
@@ -215,6 +221,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "7",
+    companyId: "7",
     title: "Data Scientist",
     company: "OVO",
     companyLogo: "/ovo-logo-purple-fintech.jpg",
@@ -243,6 +250,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "8",
+    companyId: "8",
     title: "UX Researcher",
     company: "Blibli",
     companyLogo: "/blibli-logo-blue-ecommerce.jpg",
@@ -265,6 +273,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "9",
+    companyId: "9",
     title: "Backend Engineer",
     company: "Dana Indonesia",
     companyLogo: "/dana-logo-blue-fintech.jpg",
@@ -287,6 +296,7 @@ export const mockJobs: Job[] = [
   },
   {
     id: "10",
+    companyId: "10",
     title: "Content Writer",
     company: "Kompas.com",
     companyLogo: "/kompas-logo-news-media.jpg",
