@@ -74,7 +74,7 @@ export function JobCard({ job }: JobCardProps) {
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">
-            <Badge className="bg-primary/10 text-primary border-primary/20 capitalize">
+            <Badge className="bg-primary text-primary border-primary/20 capitalize">
               {job.type.replace("-", " ")}
             </Badge>
             <Badge variant="outline" className="capitalize">
