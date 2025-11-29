@@ -1,65 +1,173 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState, useMemo } from "react";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { JobCard } from "@/components/job-card";
+import { SearchFilters } from "@/components/search-filters";
+import { StatsBanner } from "@/components/stats-banner";
+import { Button } from "@/components/ui/button";
+import { mockJobs } from "@/lib/data";
+import type { FilterState } from "@/lib/types";
+import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
+
+export default function HomePage() {
+  const [filters, setFilters] = useState<FilterState>({
+    search: "",
+    category: "Semua Kategori",
+    type: "Semua Tipe",
+    experience: "Semua Level",
+    location: "Semua Lokasi",
+    salary: { min: 0, max: 100000000 },
+  });
+
+  const filteredJobs = useMemo(() => {
+    return mockJobs.filter((job) => {
+      const matchesSearch =
+        !filters.search ||
+        job.title.toLowerCase().includes(filters.search.toLowerCase()) ||
+        job.company.toLowerCase().includes(filters.search.toLowerCase()) ||
+        job.tags.some((tag) =>
+          tag.toLowerCase().includes(filters.search.toLowerCase())
+        );
+
+      const matchesCategory =
+        filters.category === "Semua Kategori" ||
+        job.category === filters.category;
+
+      const matchesType =
+        filters.type === "Semua Tipe" ||
+        job.type.replace("-", " ").toLowerCase() === filters.type.toLowerCase();
+
+      const matchesExperience =
+        filters.experience === "Semua Level" ||
+        filters.experience.toLowerCase().includes(job.experience);
+
+      const matchesLocation =
+        filters.location === "Semua Lokasi" ||
+        job.location === filters.location;
+
+      return (
+        matchesSearch &&
+        matchesCategory &&
+        matchesType &&
+        matchesExperience &&
+        matchesLocation
+      );
+    });
+  }, [filters]);
+
+  const featuredJobs = filteredJobs.filter((job) => job.featured);
+  const regularJobs = filteredJobs.filter((job) => !job.featured);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="flex min-h-screen flex-col bg-background">
+      <Header />
+
+      <main className="flex-1">
+        <section className="border-b border-border bg-card px-4 py-16 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary">
+                <Sparkles className="h-4 w-4" />
+                <span>Lebih dari 10.000 lowongan tersedia di </span>
+              </div>
+              <h1 className="text-4xl font-bold tracking-tight text-foreground text-balance md:text-5xl lg:text-6xl">
+                Temukan karir impianmu
+              </h1>
+              <p className="mt-6 text-lg leading-relaxed text-muted-foreground text-pretty">
+                Temukan ribuan lowongan kerja dari perusahaan teknologi terbaik
+                di Jakarta, Bogor, Depok, Tangerang, dan Bekasi. Cari, filter,
+                dan lamar pekerjaan yang sesuai dengan skill dan aspirasimu.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Button size="lg" asChild>
+                  <Link href="/jobs">
+                    Lihat Semua Lowongan
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/dashboard/post">Pasang Lowongan</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="border-b border-border px-4 py-12 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <StatsBanner />
+          </div>
+        </section>
+
+        {/* Job Listings Section */}
+        <section className="px-4 py-12 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold text-foreground">
+                Lowongan Terbaru
+              </h2>
+              <p className="mt-2 text-muted-foreground">
+                Temukan peluang terbaru dari perusahaan terbaik
+              </p>
+            </div>
+
+            <SearchFilters filters={filters} onFilterChange={setFilters} />
+
+            <div className="mt-8 space-y-8">
+              {featuredJobs.length > 0 && (
+                <div>
+                  <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-foreground">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    Lowongan Unggulan
+                  </h3>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {featuredJobs.map((job) => (
+                      <JobCard key={job.id} job={job} />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                {featuredJobs.length > 0 && (
+                  <h3 className="mb-4 text-lg font-semibold text-foreground">
+                    Semua Lowongan
+                  </h3>
+                )}
+                {regularJobs.length > 0 ? (
+                  <div className="grid gap-4 md:grid-cols-2">
+                    {regularJobs.map((job) => (
+                      <JobCard key={job.id} job={job} />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-dashed border-border bg-card p-12 text-center">
+                    <p className="text-muted-foreground">
+                      Tidak ada lowongan yang sesuai dengan kriteria. Coba
+                      sesuaikan filter pencarian.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-8 text-center">
+              <Button variant="outline" size="lg" asChild>
+                <Link href="/jobs">
+                  Lihat Semua Lowongan
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </main>
+
+      <Footer />
     </div>
   );
 }
