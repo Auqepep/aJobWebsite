@@ -11,11 +11,11 @@ import type { FilterState } from "@/lib/types"
 export default function JobsPage() {
   const [filters, setFilters] = useState<FilterState>({
     search: "",
-    category: "All Categories",
-    type: "All Types",
-    experience: "All Levels",
-    location: "All Locations",
-    salary: { min: 0, max: 500000 },
+    category: "Semua Kategori",
+    type: "Semua Tipe",
+    experience: "Semua Level",
+    location: "Semua Lokasi",
+    salary: { min: 0, max: 100000000 },
   })
 
   const filteredJobs = useMemo(() => {
@@ -26,15 +26,13 @@ export default function JobsPage() {
         job.company.toLowerCase().includes(filters.search.toLowerCase()) ||
         job.tags.some((tag) => tag.toLowerCase().includes(filters.search.toLowerCase()))
 
-      const matchesCategory = filters.category === "All Categories" || job.category === filters.category
+      const matchesCategory = filters.category === "Semua Kategori" || job.category === filters.category
 
-      const matchesType =
-        filters.type === "All Types" || job.type.replace("-", " ").toLowerCase() === filters.type.toLowerCase()
+      const matchesType = filters.type === "Semua Tipe" || job.type === filters.type
 
-      const matchesExperience =
-        filters.experience === "All Levels" || filters.experience.toLowerCase().includes(job.experience)
+      const matchesExperience = filters.experience === "Semua Level" || job.experience === filters.experience
 
-      const matchesLocation = filters.location === "All Locations" || job.location === filters.location
+      const matchesLocation = filters.location === "Semua Lokasi" || job.location === filters.location
 
       return matchesSearch && matchesCategory && matchesType && matchesExperience && matchesLocation
     })

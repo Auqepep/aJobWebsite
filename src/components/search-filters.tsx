@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { categories, jobTypes, experienceLevels, locations } from "@/lib/data"
+import { categories, locations } from "@/lib/data"
 import { Search, SlidersHorizontal, X } from "lucide-react"
 import type { FilterState } from "@/lib/types"
 
@@ -88,11 +88,12 @@ export function SearchFilters({ filters, onFilterChange }: SearchFiltersProps) {
               <SelectValue placeholder="Tipe Kerja" />
             </SelectTrigger>
             <SelectContent>
-              {jobTypes.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type}
-                </SelectItem>
-              ))}
+              <SelectItem value="Semua Tipe">Semua Tipe</SelectItem>
+              <SelectItem value="full-time">Full-time</SelectItem>
+              <SelectItem value="part-time">Part-time</SelectItem>
+              <SelectItem value="contract">Kontrak</SelectItem>
+              <SelectItem value="internship">Magang</SelectItem>
+              <SelectItem value="remote">Remote</SelectItem>
             </SelectContent>
           </Select>
 
@@ -101,11 +102,12 @@ export function SearchFilters({ filters, onFilterChange }: SearchFiltersProps) {
               <SelectValue placeholder="Pengalaman" />
             </SelectTrigger>
             <SelectContent>
-              {experienceLevels.map((level) => (
-                <SelectItem key={level} value={level}>
-                  {level}
-                </SelectItem>
-              ))}
+              <SelectItem value="Semua Level">Semua Level</SelectItem>
+              <SelectItem value="entry">Fresh Graduate</SelectItem>
+              <SelectItem value="mid">Mid Level</SelectItem>
+              <SelectItem value="senior">Senior</SelectItem>
+              <SelectItem value="lead">Lead</SelectItem>
+              <SelectItem value="executive">Executive</SelectItem>
             </SelectContent>
           </Select>
 
